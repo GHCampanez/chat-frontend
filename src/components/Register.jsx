@@ -5,7 +5,7 @@ import axios from 'axios'
 import {  withRouter} from 'react-router-dom';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: process.env.REACT_APP_API_URL,
     headers: { 'Authorization': 'Bearer ' + isAuthenticated.token }
 })
 
