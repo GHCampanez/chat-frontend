@@ -3,7 +3,7 @@ import { isAuthenticated } from '../isAuthenticated'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import '../style/Chat.css'
-import { logout, getUser } from "../auth";
+import { logout, getUser, getToken } from "../auth";
 
 
 
@@ -17,6 +17,7 @@ class Chat extends React.Component {
             message: '',
             messages: [],
             users: [],
+            warning: '',
             chatName: '',
             interval: setInterval(
                 function () {
@@ -62,20 +63,29 @@ class Chat extends React.Component {
     buildApi = () => {
         return axios.create({
             baseURL: process.env.REACT_APP_API_URL,
-            headers: { 'Authorization': 'Bearer ' + isAuthenticated.token }
+            headers: { 'Authorization': 'Bearer ' + getToken() }
         })
     }
     sendMessage = () => {
 
-        const api = this.buildApi()
-        const messages = [...this.state.messages, { message: this.state.message, user: this.state.user }]
-        api.post(`/chat/conversation`, {
-            chatName: this.state.chatName,
-            messages: messages
-        })
+        if (this.state.message.trim() !== '') {
+            if (this.state.chatName !== '') {
+                const api = this.buildApi()
+                const messages = [...this.state.messages, { message: this.state.message, user: this.state.user }]
+                api.post(`/chat/conversation`, {
+                    chatName: this.state.chatName,
+                    messages: messages
+                })
 
-        this.setState({ messages })
-        this.setState({ message: '' });
+                this.setState({ message: '', warning: '', messages })
+            } else {
+                this.setState({ warning: 'Pick a friend before send a message' })
+            }
+
+        } else {
+            this.setState({ warning: 'Write something before send a message!' })
+
+        }
     };
 
     selectFriend = friend => {
@@ -146,6 +156,9 @@ class Chat extends React.Component {
                                 <button type="button" className="btn btn-danger m-2" onClick={() => this.signOut()}>
                                     Sign Out
                                 </button>
+                                <small className="form-text text-danger">
+                                    {this.state.warning}
+                                </small>
                             </div>
                         </div>
                     </div>
