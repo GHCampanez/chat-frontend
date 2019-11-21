@@ -1,7 +1,8 @@
 import React from 'react'
 import { isAuthenticated } from '../isAuthenticated'
 import axios from 'axios'
-import {  withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { login } from "../auth";
 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
@@ -41,9 +42,7 @@ class Home extends React.Component {
                 password: this.state.password
             })
                 .then(res => {
-                    isAuthenticated.state = true
-                    isAuthenticated.token = res.data.token
-                    isAuthenticated.user = res.data.user.name
+                    login(res.data.token, res.data.user)
                     this.props.history.push(`/chat/${res.data.user.name}`)
                 })
                 .catch(err => {

@@ -6,12 +6,12 @@ import Chat from './components/Chat'
 import Notfound from './components/notfound'
 import { Route, BrowserRouter as Router, Switch, Redirect  } from 'react-router-dom'
 import Register from './components/Register';
-import { isAuthenticated } from './isAuthenticated';
+import { isAuthenticated } from "./auth";
 
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
-        isAuthenticated.state ? (
+        isAuthenticated() ? (
             <Component {...props} />
         ) : (
                 <Redirect to={{ pathname: '/', state: { from: props.location } }} />

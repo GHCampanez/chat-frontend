@@ -3,6 +3,7 @@ import { isAuthenticated } from '../isAuthenticated'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import '../style/Chat.css'
+import { logout, getUser } from "../auth";
 
 
 
@@ -23,21 +24,39 @@ class Chat extends React.Component {
                 }
                     .bind(this),
                 3000
-            )
+            ),
+            intervalFriends: setInterval(
+                function () {
+                    this.getFriends()
+                }
+                    .bind(this),
+                10000
+            ),
         };
 
-        console.log(isAuthenticated)
     }
 
-
     componentWillMount = () => {
+        const { name } = getUser()
+
+        if (this.props.match.params.user !== name) {
+            this.setState({ user: name })
+            this.props.history.push(`/chat/${name}`)
+        }
+    }
+
+    componentDidMount = () => {
+        this.getFriends()
+    }
+
+    getFriends = () => {
+
         const api = this.buildApi()
         api.get('/chat/users')
             .then(data => {
                 let users = data.data.filter(d => d.name !== this.state.user)
                 this.setState({ users })
-            }).catch(err => console.err(err))
-
+            }).catch(err => console.error(err))
     }
 
     buildApi = () => {
@@ -88,9 +107,8 @@ class Chat extends React.Component {
     signOut() {
 
         clearInterval(this.state.interval)
-        isAuthenticated.state = false
-        isAuthenticated.token = ''
-        isAuthenticated.user = ''
+        clearInterval(this.state.intervalFriends)
+        logout()
         this.props.history.push('/')
     }
 
