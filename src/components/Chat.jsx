@@ -15,7 +15,7 @@ class Chat extends React.Component {
             user: this.props.match.params.user,
             message: '',
             messages: [],
-            users: [{ id: 1, name: 'Pedro' }, { id: 2, name: 'Matheus' }],
+            users: [],
             chatName: '',
             interval: setInterval(
                 function () {
@@ -36,13 +36,13 @@ class Chat extends React.Component {
             .then(data => {
                 let users = data.data.filter(d => d.name !== this.state.user)
                 this.setState({ users })
-            })
+            }).catch(err => console.err(err))
 
     }
 
     buildApi = () => {
         return axios.create({
-            baseURL: 'http://localhost:5000',
+            baseURL: process.env.REACT_APP_API_URL,
             headers: { 'Authorization': 'Bearer ' + isAuthenticated.token }
         })
     }
@@ -86,7 +86,7 @@ class Chat extends React.Component {
     }
 
     signOut() {
-        
+
         clearInterval(this.state.interval)
         isAuthenticated.state = false
         isAuthenticated.token = ''
