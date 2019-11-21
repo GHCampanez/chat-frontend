@@ -1,0 +1,1 @@
+{"version":3,"sources":["Chat.css"],"names":[],"mappings":"AAAA,QACI,wBAAyB,CACzB,2BACJ","file":"main.0abe2e85.chunk.css","sourcesContent":[".scroll {\r\n    max-height: 80%!important;\r\n    overflow-y: scroll!important;\r\n}"]}

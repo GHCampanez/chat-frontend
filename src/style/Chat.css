@@ -1,0 +1,4 @@
+.scroll {
+    max-height: 80%!important;
+    overflow-y: scroll!important;
+}
