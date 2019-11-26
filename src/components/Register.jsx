@@ -27,9 +27,9 @@ class Register extends Component {
         })
     }
 
-    handleForm = async (e) => {
+    handleForm = (e) => {
         e.preventDefault()
-        await api.post('/user/register', {
+        api.post('/user/register', {
             name: this.state.name,
             password: this.state.password,
             createdAt: new Date()
