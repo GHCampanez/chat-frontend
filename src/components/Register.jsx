@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-
-import { isAuthenticated } from '../isAuthenticated'
 import axios from 'axios'
-import {  withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers: { 'Authorization': 'Bearer ' + isAuthenticated.token }
+    baseURL: process.env.REACT_APP_API_URL
 })
 
 class Register extends Component {
@@ -38,9 +35,7 @@ class Register extends Component {
             createdAt: new Date()
         })
             .then(res => {
-                isAuthenticated.state = true
-                isAuthenticated.token = res.data.token
-                isAuthenticated.user = res.data.user
+                alert('New user has been created')
                 this.props.history.push('/')
             })
             .catch(err => {
