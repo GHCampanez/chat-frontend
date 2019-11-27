@@ -67,6 +67,8 @@ class Register extends Component {
                                 <input onChange={(e) => this.handleInputChange(e)} type="password" className="form-control" value={this.state.password} id="password" name="password" placeholder="Password" />
                             </div>
                             <button type="submit" className="btn btn-info">Submit</button>
+                            <button type="button" onClick={() => this.props.history.push('/')} className="btn btn-secondary m-2">Back</button>
+
                         </form>
                     </div>
                 </div>
