@@ -1,12 +1,10 @@
 import React from 'react'
-import { isAuthenticated } from '../isAuthenticated'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom';
 import { login } from "../auth";
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers: { 'Authorization': 'Bearer ' + isAuthenticated.token }
+    baseURL: process.env.REACT_APP_API_URL
 })
 
 

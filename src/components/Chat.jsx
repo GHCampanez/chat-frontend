@@ -72,9 +72,10 @@ class Chat extends React.Component {
             if (this.state.chatName !== '') {
                 const api = this.buildApi()
                 const messages = [...this.state.messages, { message: this.state.message, user: this.state.user }]
-                api.post(`/chat/conversation`, {
+                api.post(`/chat/conversation/message`, {
                     chatName: this.state.chatName,
-                    messages: messages
+                    message: messages,
+                    user: this.state.user 
                 })
 
                 this.setState({ message: '', warning: '', messages })
