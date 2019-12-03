@@ -1,5 +1,4 @@
 import React from 'react'
-import { isAuthenticated } from '../isAuthenticated'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import '../style/Chat.css'
