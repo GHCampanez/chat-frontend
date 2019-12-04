@@ -17,6 +17,7 @@ class Chat extends React.Component {
             messages: [],
             users: [],
             warning: '',
+            friend: '',
             video: {},
             chatName: '',
             interval: setInterval(
@@ -117,7 +118,7 @@ class Chat extends React.Component {
     selectFriend = friend => {
 
         const chatName = this.buildChatName(friend.name, this.state.user)
-        this.setState({ chatName })
+        this.setState({ chatName, friend })
 
         this.getChat(chatName)
     }
@@ -168,6 +169,12 @@ class Chat extends React.Component {
                                 <div className="card-title">
                                     <h2>Global Chat</h2>
                                     <span>Welcome {this.state.user}</span>
+                                    {this.state.friend !== '' ?
+                                        <span>Chat with {this.state.friend}</span>
+                                        :
+                                        <span>Select a friend to start a conversation.</span>
+
+                                    }
                                 </div>
                                 <hr />
                                 <div className="messages scroll ">
