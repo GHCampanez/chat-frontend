@@ -17,6 +17,7 @@ class Chat extends React.Component {
             messages: [],
             users: [],
             warning: '',
+            video: {},
             chatName: '',
             interval: setInterval(
                 function () {
@@ -65,19 +66,44 @@ class Chat extends React.Component {
             headers: { 'Authorization': 'Bearer ' + getToken() }
         })
     }
+
+    buildApiWithContent = () => {
+        return axios.create({
+            baseURL: process.env.REACT_APP_API_URL,
+            headers: {
+                'Authorization': 'Bearer ' + getToken(),
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    }
+
     sendMessage = () => {
 
         if (this.state.message.trim() !== '') {
             if (this.state.chatName !== '') {
-                const api = this.buildApi()
-                const messages = [...this.state.messages, { message: this.state.message, user: this.state.user }]
-                api.post(`/chat/conversation/message`, {
-                    chatName: this.state.chatName,
-                    message: messages,
-                    user: this.state.user 
-                })
 
-                this.setState({ message: '', warning: '', messages })
+                const messages = [...this.state.messages, { message: this.state.message, user: this.state.user }]
+                if (this.state.video.name) {
+                    var formData = new FormData()
+
+                    formData.append('video', this.state.video)
+                    formData.append('chatName', this.state.chatName)
+                    formData.append('message', this.state.message)
+
+                    const api = this.buildApiWithContent()
+
+                    api.post('/chat/conversation/video', formData)
+                    document.getElementById('video').value = ''
+
+                } else {
+                    const api = this.buildApi()
+                    api.post(`/chat/conversation/message`, {
+                        chatName: this.state.chatName,
+                        message: this.state.message,
+                        user: this.state.user
+                    })
+                }
+                this.setState({ message: '', warning: '', messages, video: {} })
             } else {
                 this.setState({ warning: 'Pick a friend before send a message' })
             }
@@ -122,6 +148,15 @@ class Chat extends React.Component {
         this.props.history.push('/')
     }
 
+    handleChangeFile(e) {
+
+        var video = e.target.files[0]
+        if (video) {
+            this.setState({ video })
+        }
+
+    }
+
     render() {
 
         return (
@@ -147,9 +182,27 @@ class Chat extends React.Component {
                             <div className="card-footer">
                                 <input type="text" placeholder="Message" className="form-control" value={this.state.message} onChange={ev => this.setState({ message: ev.target.value })} />
                                 <br />
-                                <button onClick={() => this.sendMessage()} className="btn btn-primary form-control">Send</button>
-                                <br />
-                                <br />
+
+                                {this.state.chatName ?
+                                    <div>
+                                        <button onClick={() => this.sendMessage()} className="btn btn-primary form-control">Send</button>
+                                        <br />
+
+                                        <br />
+                                        <input
+                                            onChange={(e) => this.handleChangeFile(e)}
+                                            className="btn btn-primary m-3"
+                                            name="file"
+                                            id="video"
+                                            type="file"
+                                            accept="video/mp4"
+                                            placeholder="Add Video File"
+                                        />
+                                    </div>
+                                    :
+                                    <span></span>
+                                }
+
                                 <button type="button" className="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
                                     Find a friend
                                 </button>
