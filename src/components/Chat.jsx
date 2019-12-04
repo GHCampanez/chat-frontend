@@ -169,8 +169,9 @@ class Chat extends React.Component {
                                 <div className="card-title">
                                     <h2>Global Chat</h2>
                                     <span>Welcome {this.state.user}</span>
+                                    <br />
                                     {this.state.friend !== '' ?
-                                        <span>Chat with {this.state.friend}</span>
+                                        <span>Chat with {this.state.friend.name}</span>
                                         :
                                         <span>Select a friend to start a conversation.</span>
 
