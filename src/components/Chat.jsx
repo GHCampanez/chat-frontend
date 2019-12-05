@@ -88,6 +88,7 @@ class Chat extends React.Component {
                     var formData = new FormData()
 
                     formData.append('video', this.state.video)
+                    formData.append('user', this.state.user)
                     formData.append('chatName', this.state.chatName)
                     formData.append('message', this.state.message)
 
@@ -180,8 +181,18 @@ class Chat extends React.Component {
                                 <hr />
                                 <div className="messages scroll ">
                                     {this.state.messages.map(message => {
+                                        console.log(message)
                                         return (
-                                            <div>{message.user}: {message.message}</div>
+                                            <div>
+                                                {message.user}: {message.message}
+
+                                                <div>
+                                                    {message.video ?
+                                                        <span>{message.user}: <a href={message.video} target='_blank'>Video</a></span>
+                                                        : <></>
+                                                    }
+                                                </div>
+                                            </div>
                                         )
                                     })}
                                 </div>
