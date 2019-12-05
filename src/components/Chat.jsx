@@ -95,6 +95,8 @@ class Chat extends React.Component {
                     const api = this.buildApiWithContent()
 
                     api.post('/chat/conversation/video', formData)
+                        .then()
+                        .catch(err => alert(err.error))
                     document.getElementById('video').value = ''
 
                 } else {
@@ -104,6 +106,8 @@ class Chat extends React.Component {
                         message: this.state.message,
                         user: this.state.user
                     })
+                        .then()
+                        .catch(err => alert(err.error))
                 }
                 this.setState({ message: '', warning: '', messages, video: {} })
             } else {
@@ -181,7 +185,6 @@ class Chat extends React.Component {
                                 <hr />
                                 <div className="messages scroll ">
                                     {this.state.messages.map(message => {
-                                        console.log(message)
                                         return (
                                             <div>
                                                 {message.user}: {message.message}
