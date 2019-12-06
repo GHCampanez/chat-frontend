@@ -80,7 +80,7 @@ class Chat extends React.Component {
 
     sendMessage = () => {
 
-        if (this.state.message.trim() !== '') {
+        if (this.state.message.trim() !== '' || this.state.video.name) {
             if (this.state.chatName !== '') {
 
                 const messages = [...this.state.messages, { message: this.state.message, user: this.state.user }]
@@ -191,7 +191,8 @@ class Chat extends React.Component {
 
                                                 <div>
                                                     {message.video ?
-                                                        <span>{message.user}: <a href={message.video} target='_blank'>Video</a></span>
+                                                        <span>{message.user}: <video src={message.video} controls width="640" height="480"></video>
+                                                        </span>
                                                         : <></>
                                                     }
                                                 </div>
